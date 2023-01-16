@@ -47,7 +47,7 @@ function(nyu_include_fixup)
     )
     get_target_property(_intf_srcs ${_target} INTF_SV_SOURCES)
     set_property(TARGET ${_target}
-      PROPERTY SV_SOURCES_NOGENEX _intf_srcs
+      PROPERTY SV_SOURCES_NOGENEX ${_intf_srcs}
     )
     get_target_property(_libs ${_target} INTERFACE_LINK_LIBRARIES)
     if(_libs)
