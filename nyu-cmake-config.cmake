@@ -13,6 +13,11 @@ function(nyu_add_sv TARGET)
   endforeach()
 endfunction()
 
+function(nyu_add_sv_library TARGET)
+  add_library(${TARGET} INTERFACE)
+  nyu_add_sv(${TARGET} ${ARGN})
+endfunction()
+
 function(__nyu_link_internal TARGET)
   foreach(_lib IN LISTS ARGN)
     set_property(TARGET ${TARGET} APPEND
