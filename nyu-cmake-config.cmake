@@ -7,6 +7,9 @@ function(nyu_add_sv TARGET)
     set_property(TARGET ${TARGET} APPEND
       PROPERTY SV_SRC_PATHS ${_real}
     )
+    set_property(TARGET ${TARGET} APPEND
+      PROPERTY SV_SOURCES_NOGENEX ${_real}
+    )
   endforeach()
 endfunction()
 
@@ -14,6 +17,10 @@ function(__nyu_link_internal TARGET)
   foreach(_lib IN LISTS ARGN)
     set_property(TARGET ${TARGET} APPEND
       PROPERTY SV_SOURCES $<TARGET_GENEX_EVAL:${_lib},$<TARGET_PROPERTY:${_lib},SV_SOURCES>>
+    )
+    get_target_property(_srcs ${_lib} SV_SOURCES_NOGENEX)
+    set_property(TARGET ${TARGET} APPEND
+      PROPERTY SV_SOURCES_NOGENEX ${_srcs}
     )
   endforeach()
 endfunction()
@@ -32,6 +39,10 @@ function(nyu_include_fixup)
 
     set_property(TARGET ${_target}
       PROPERTY SV_SOURCES $<TARGET_PROPERTY:${_target},INTF_SV_SOURCES>
+    )
+    get_target_property(_intf_srcs ${_target} INTF_SV_SOURCES)
+    set_property(TARGET ${_target}
+      PROPERTY SV_SOURCES_NOGENEX _intf_srcs
     )
     get_target_property(_libs ${_target} INTERFACE_LINK_LIBRARIES)
     if(_libs)
@@ -78,5 +89,15 @@ function(nyu_install_sv)
     EXPORT ${ARG_EXPORT}
     NAMESPACE ${ARG_NAMESPACE}
     DESTINATION ${ARG_EXPORT_DEST}
+  )
+endfunction()
+
+find_package(verilator CONFIG REQUIRED)
+
+function(nyu_verilate TARGET)
+  get_target_property(_srcs ${TARGET} SV_SOURCES_NOGENEX)
+  verilate(${TARGET}
+    SOURCES ${_srcs}
+    ${ARGN}
   )
 endfunction()
