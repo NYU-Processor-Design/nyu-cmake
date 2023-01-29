@@ -1,9 +1,5 @@
 option(NYU_BUILD_TESTS "Build test binaries and add them to CTest" FALSE)
 
-if(NYU_BUILD_TESTS)
-  include(CTest)
-endif()
-
 function(nyu_setup_test)
   cmake_parse_arguments(PARSE_ARGV 0 ARG
     ""
