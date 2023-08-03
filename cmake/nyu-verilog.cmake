@@ -110,15 +110,18 @@ endfunction()
 function(nyu_target_verilate TARGET)
   cmake_parse_arguments(PARSE_ARGV 1 ARG
     ""
-    ""
+    "PREFIX"
     "TOP_MODULES;ARGS"
   )
+  if(NOT ARG_PREFIX)
+    set(ARG_PREFIX V)
+  endif()
   get_target_property(_srcs ${TARGET} SV_SOURCES_NOGENEX)
   foreach(_mod IN LISTS ARG_TOP_MODULES)
     verilate(${TARGET}
       SOURCES ${_srcs}
       TOP_MODULE ${_mod}
-      PREFIX V${_mod}
+      PREFIX ${ARG_PREFIX}${_mod}
       ${ARG_ARGS}
     )
   endforeach()
