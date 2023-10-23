@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(nyu-cmake VERSION 1.1.3)
+project(nyu-cmake VERSION 1.2.0)
 
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
